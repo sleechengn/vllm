@@ -25,10 +25,14 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     command: ["Qwen/Qwen2.5-1.5B-Instruct"]
+    volumes:
+      - "vllm-hf-home:/opt/hf_home"
+      - "vllm-ms-home:/opt/ms_home"
     environment:
       - TZ=Asia/Shanghai
       - NVIDIA_DRIVER_CAPABILITIES=all
       - NVIDIA_VISIBLE_DEVICES=all
+      - VLLM_USE_MODELSCOPE=true
     runtime: nvidia
     networks:
       lan13:
@@ -40,6 +44,21 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+volumes:
+  vllm-hf-home:
+    name: vllm-hf-home
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./hf_home
+  vllm-ms-home:
+    name: vllm-ms-home
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./ms_home
 ```
 
 访问方法 openai 兼容
