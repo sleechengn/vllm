@@ -45,3 +45,6 @@ services:
 访问方法 openai 兼容
 
 http://ip:8000
+
+支持模型：
+https://docs.vllm.ai/en/latest/models/supported_models.html#
