@@ -24,5 +24,24 @@ run echo 'source /opt/venv/bin/activate' >> /root/.bashrc \
 	&& echo 'source /opt/venv/bin/activate' >> /docker-entrypoint.sh \
 	&& echo 'vllm serve $*' >> /docker-entrypoint.sh \
 	&& chmod +x /docker-entrypoint.sh
+
+run echo '#!/usr/bin/bash' >> /opt/post.sh \
+        && echo 'source /root/.local/bin/env' >> /opt/post.sh \
+        && echo 'source /opt/venv/bin/activate' >> /opt/post.sh \
+        && echo 'uv pip install modelscope' >> /opt/post.sh \
+        && chmod +x /opt/post.sh \
+	&& /opt/post.sh \
+	&& rm -rf /opt/post.sh
+
+run mkdir /opt/hf_home
+env HF_HOME=/opt/hf_home
+volume /opt/hf_home
+
+run mkdir /opt/ms_home
+env MODELSCOPE_CACHE=/opt/ms_home
+volume /opt/ms_home
+
+volume /root
+
 cmd []
 entrypoint ["/docker-entrypoint.sh"]
