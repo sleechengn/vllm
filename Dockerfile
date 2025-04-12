@@ -39,6 +39,10 @@ run echo '#!/usr/bin/bash' >> /opt/post.sh \
 	&& /opt/post.sh \
 	&& rm -rf /opt/post.sh
 
+run set -e \
+	&& . /opt/venv/bin/activate \
+	&& pip install gguf --force-reinstall
+
 run mkdir /opt/hf_home
 env HF_HOME=/opt/hf_home
 volume /opt/hf_home
